@@ -1,0 +1,16 @@
+
+# Jitter Term
+bounds = dict(log_sigma=(-15, 15))
+kernel = terms.JitterTerm(log_sigma=np.log(0.5), bounds=bounds)
+
+# A periodic component for fundamental harmonic peak
+#bounds = dict(log_S0=(-10, 30), log_Q=(-20, 20), log_omega0=(-20, 15))
+bounds = dict(log_S0=(-10, 20), log_Q=(-10, 10), log_omega0=(-13.25, -12.5))
+Q = 10
+#w0 = (1.0 / 27.0 / 2.0 / np.pi)
+w0 = 2.0 * np.pi * (1.0 / (27.0*3600*24))
+#S0 = np.var(df.SMMF.values) / (w0 * Q) / 10
+S0 = np.var(df_SMMF['SMMF']) / (w0 * Q) / 1.0
+print(np.log(S0), np.log(Q), np.log(w0))
+kernel += terms.SHOTerm(log_S0=np.log(S0), log_Q=np.log(Q), log_omega0=np.log(w0),
+                        bounds=bounds)
